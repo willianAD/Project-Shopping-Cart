@@ -1,8 +1,6 @@
 // Esse tipo de comentário que estão antes de todas as funções são chamados de JSdoc,
 // experimente passar o mouse sobre o nome das funções e verá que elas possuem descrições!
 
-// const { fetchProducts, fetchProducts } = require("./helpers/fetchProducts");
-
 // Fique a vontade para modificar o código já escrito e criar suas próprias funções!
 
 /**
@@ -69,13 +67,13 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
  * @param {string} product.price - Preço do produto.
  * @returns {Element} Elemento de um item do carrinho.
  */
-// const createCartItemElement = ({ id, title, price }) => {
-//   const li = document.createElement('li');
-//   li.className = 'cart__item';
-//   li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
-//   li.addEventListener('click', cartItemClickListener);
-//   return li;
-// };
+const createCartItemElement = ({ id, title, price }) => {
+  const li = document.createElement('li');
+  li.className = 'cart__item';
+  li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
+  // li.addEventListener('click', cartItemClickListener);
+  return li;
+};
 
 const objetoResults = async (param) => {
   const itemsClass = document.getElementsByClassName('items')[0];
@@ -91,8 +89,19 @@ const objetoResults = async (param) => {
   });
 };
 
+const meuCarrinho = async () => {
+  const getButton = document.querySelectorAll('.item__add');
+  const getOl = document.querySelector('.cart__items');
+  getButton.forEach((button) => {
+    button.addEventListener('click', async (event) => {
+      const id = event.target.parentNode.firstChild.innerText;
+      const item = await fetchItem(id);
+      getOl.appendChild(createCartItemElement(item));
+      });
+    });
+};
+
 window.onload = async () => {
-    objetoResults('computador');
-    // const teste = await fetchProducts('computador');
-    // console.log(teste.results);
+    await objetoResults('computador');
+    await meuCarrinho();
 };
