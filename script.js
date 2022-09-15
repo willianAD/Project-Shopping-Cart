@@ -1,3 +1,4 @@
+const getOl = document.querySelector('.cart__items');
 // Esse tipo de comentário que estão antes de todas as funções são chamados de JSdoc,
 // experimente passar o mouse sobre o nome das funções e verá que elas possuem descrições!
 
@@ -52,7 +53,7 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
   return section;
 };
 
-const objetoResults = async (param) => {
+const objectResult = async (param) => {
   const itemsClass = document.querySelector('.items');
   const getProd = await fetchProducts(param);
   getProd.results.forEach((prod) => { 
@@ -72,8 +73,6 @@ const objetoResults = async (param) => {
  * @returns {string} ID do produto.
  */
 
-// const getIdFromProductItem = (product) => product.querySelector('span.id').innerText; ESTE ESTÁ ERRADO!!!
-
 // const getIdFromProductItem = (product) => product.querySelector('span.item_id').innerText;
 
 /**
@@ -85,8 +84,30 @@ const objetoResults = async (param) => {
  * @returns {Element} Elemento de um item do carrinho.
  */
 
- const cartItemClickListener = (event) => {
+const cartItemClickListener = (event) => {
   event.target.remove();
+};
+
+const recuperaLocalStorage = () => {
+  const armazena = localStorage.getItem('cartItems');
+  return JSON.parse(armazena);
+};
+
+const saveLocalStorage = (param) => {
+  const armazena = recuperaLocalStorage() || [];
+  const total = [...armazena, param];
+  localStorage.setItem('cartItems', JSON.stringify(total));
+};
+
+const recuperaItems = () => {
+  const imprime = recuperaLocalStorage() || [];
+  imprime.forEach((valor) => {
+    const li = document.createElement('li');
+    li.className = 'cart__item';
+    li.innerText = valor;
+    li.addEventListener('click', cartItemClickListener);
+    getOl.appendChild(li);
+  });
 };
 
 const createCartItemElement = ({ id, title, price }) => {
@@ -97,20 +118,20 @@ const createCartItemElement = ({ id, title, price }) => {
   return li;
 };
 
-const meuCarrinho = async () => {
+const myCart = async () => {
   const getButton = document.querySelectorAll('.item__add');
-  const getOl = document.querySelector('.cart__items');
   getButton.forEach((button) => {
     button.addEventListener('click', async (event) => {
       const id = event.target.parentNode.firstChild.innerText;
       const item = await fetchItem(id);
-      getOl.appendChild(createCartItemElement(item));
+      const func = createCartItemElement(item);
+      getOl.appendChild(func);
+      saveLocalStorage(func.innerText);
     });
   });
 };
 
 const clearCarrinho = () => {
-  const getOl = document.querySelector('.cart__items');
   getOl.innerHTML = '';
 };
 
@@ -118,12 +139,6 @@ const resetCarrinho = () => {
   const clearBtn = document.querySelector('.empty-cart');
   clearBtn.addEventListener('click', clearCarrinho);
 };
-
-// const sumProdutos = async () => {
-//   const getTotal = document.querySelector('.total-price');
-//   console.log(getTotal);
-//   // getTotal.innerText = ;
-// };
 
 const createLoading = () => {
   const div = document.createElement('div');
@@ -140,9 +155,9 @@ const removeLoading = () => {
 
 window.onload = async () => {
   createLoading();
-  await objetoResults('computador');
-  removeLoading();
-  meuCarrinho();
+  await objectResult('computador');
+  myCart();
   resetCarrinho();
-  // sumProdutos();
+  recuperaItems();
+  removeLoading();
 };
