@@ -8,6 +8,7 @@
  * @param {string} imageSource - URL da imagem.
  * @returns {Element} Elemento de imagem do produto.
  */
+
 const createProductImageElement = (imageSource) => {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -22,6 +23,7 @@ const createProductImageElement = (imageSource) => {
  * @param {string} innerText - Texto do elemento.
  * @returns {Element} Elemento criado.
  */
+
 const createCustomElement = (element, className, innerText) => {
   const e = document.createElement(element);
   e.className = className;
@@ -37,6 +39,7 @@ const createCustomElement = (element, className, innerText) => {
  * @param {string} product.thumbnail - URL da imagem do produto.
  * @returns {Element} Elemento de produto.
  */
+
 const createProductItemElement = ({ id, title, thumbnail }) => {
   const section = document.createElement('section');
   section.className = 'item';
@@ -47,6 +50,20 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
   section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
 
   return section;
+};
+
+const objetoResults = async (param) => {
+  const itemsClass = document.querySelector('.items');
+  const getProd = await fetchProducts(param);
+  getProd.results.forEach((prod) => { 
+    const obj = { 
+      id: prod.id,
+      title: prod.title,
+      thumbnail: prod.thumbnail, 
+    };
+    const insertProdct = createProductItemElement(obj);
+    itemsClass.appendChild(insertProdct);
+  });
 };
 
 /**
@@ -67,26 +84,13 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
  * @param {string} product.price - Preço do produto.
  * @returns {Element} Elemento de um item do carrinho.
  */
+
 const createCartItemElement = ({ id, title, price }) => {
   const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
   // li.addEventListener('click', cartItemClickListener);
   return li;
-};
-
-const objetoResults = async (param) => {
-  const itemsClass = document.getElementsByClassName('items')[0];
-  const getProd = await fetchProducts(param);
-  getProd.results.forEach((prod) => { 
-    const obj = { 
-      id: prod.id,
-      title: prod.title,
-      thumbnail: prod.thumbnail, 
-    };
-    const insertProdct = createProductItemElement(obj);
-    itemsClass.appendChild(insertProdct);
-  });
 };
 
 const meuCarrinho = async () => {
@@ -101,7 +105,18 @@ const meuCarrinho = async () => {
     });
 };
 
+const clearCarrinho = () => {
+  const getOl = document.querySelector('.cart__items');
+  getOl.innerHTML = '';
+};
+
+const resetCarrinho = () => {
+  const clearBtn = document.querySelector('.empty-cart');
+  clearBtn.addEventListener('click', clearCarrinho);
+};
+
 window.onload = async () => {
   await objetoResults('computador');
-  await meuCarrinho();
+  meuCarrinho();
+  resetCarrinho();
 };
