@@ -102,6 +102,6 @@ const meuCarrinho = async () => {
 };
 
 window.onload = async () => {
-    await objetoResults('computador');
-    await meuCarrinho();
+  await objetoResults('computador');
+  await meuCarrinho();
 };

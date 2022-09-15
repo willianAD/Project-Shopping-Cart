@@ -15,7 +15,7 @@ describe('1 - Teste a função fetchProducts', () => {
   it('Testa se a funçao com parametro "computador" usa o endpoint correto', async () => {
     const url = 'https://api.mercadolibre.com/sites/MLB/search?q=computador';
     await fetchProducts('computador');
-    expect(fetch).toHaveBeenCalledWidth(url);
+    expect(fetch).toHaveBeenCalledWith(url);
   });
 
   it('Testa se a função com paremetro "computador" tem a estrutura igual a computadorSearch', async () => {
@@ -24,8 +24,8 @@ describe('1 - Teste a função fetchProducts', () => {
   });
   
   it('Testa se ao chamar a função sem paremetro apareça a menssagem de erro', async () => {
-    await fetchProducts();
-    expect(fetchProducts()).toThrowError('You must provide an url');
+    const result = await fetchProducts();
+    expect(result).toEqual(new Error('You must provide an url'));
   });
   // fail('Teste vazio');
 });
