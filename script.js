@@ -85,7 +85,7 @@ const objetoResults = async (param) => {
  * @returns {Element} Elemento de um item do carrinho.
  */
 
- const cartItemClickListener = async (event) => {
+ const cartItemClickListener = (event) => {
   event.target.remove();
 };
 
@@ -105,8 +105,8 @@ const meuCarrinho = async () => {
       const id = event.target.parentNode.firstChild.innerText;
       const item = await fetchItem(id);
       getOl.appendChild(createCartItemElement(item));
-      });
     });
+  });
 };
 
 const clearCarrinho = () => {
@@ -119,8 +119,30 @@ const resetCarrinho = () => {
   clearBtn.addEventListener('click', clearCarrinho);
 };
 
+// const sumProdutos = async () => {
+//   const getTotal = document.querySelector('.total-price');
+//   console.log(getTotal);
+//   // getTotal.innerText = ;
+// };
+
+const createLoading = () => {
+  const div = document.createElement('div');
+  div.className = 'loading';
+  div.innerText = 'Carregando...';
+  const itemsClass = document.querySelector('.items');
+  itemsClass.appendChild(div);
+};
+
+const removeLoading = () => {
+  const loading = document.querySelector('.loading');
+  loading.remove();
+};
+
 window.onload = async () => {
+  createLoading();
   await objetoResults('computador');
+  removeLoading();
   meuCarrinho();
   resetCarrinho();
+  // sumProdutos();
 };
