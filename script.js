@@ -8,7 +8,7 @@ const getOl = document.querySelector('.cart__items');
  * Função responsável por criar e retornar o elemento de imagem do produto.
  * @param {string} imageSource - URL da imagem.
  * @returns {Element} Elemento de imagem do produto.
- */
+*/
 
 const createProductImageElement = (imageSource) => {
   const img = document.createElement('img');
@@ -23,7 +23,7 @@ const createProductImageElement = (imageSource) => {
  * @param {string} className - Classe do elemento.
  * @param {string} innerText - Texto do elemento.
  * @returns {Element} Elemento criado.
- */
+*/
 
 const createCustomElement = (element, className, innerText) => {
   const e = document.createElement(element);
@@ -39,7 +39,7 @@ const createCustomElement = (element, className, innerText) => {
  * @param {string} product.title - Título do produto.
  * @param {string} product.thumbnail - URL da imagem do produto.
  * @returns {Element} Elemento de produto.
- */
+*/
 
 const createProductItemElement = ({ id, title, thumbnail }) => {
   const section = document.createElement('section');
@@ -67,13 +67,21 @@ const objectResult = async (param) => {
   });
 };
 
+const clearCarrinho = () => {
+  getOl.innerHTML = '';
+  localStorage.clear();
+};
+
+const resetCarrinho = () => {
+  const clearBtn = document.querySelector('.empty-cart');
+  clearBtn.addEventListener('click', clearCarrinho);
+};
+
 /**
  * Função que recupera o ID do produto passado como parâmetro.
  * @param {Element} product - Elemento do produto.
  * @returns {string} ID do produto.
- */
-
-// const getIdFromProductItem = (product) => product.querySelector('span.item_id').innerText;
+*/
 
 /**
  * Função responsável por criar e retornar um item do carrinho.
@@ -82,21 +90,37 @@ const objectResult = async (param) => {
  * @param {string} product.title - Título do produto.
  * @param {string} product.price - Preço do produto.
  * @returns {Element} Elemento de um item do carrinho.
- */
-
-const cartItemClickListener = (event) => {
-  event.target.remove();
-};
+*/
 
 const recuperaLocalStorage = () => {
   const armazena = localStorage.getItem('cartItems');
   return JSON.parse(armazena);
+
 };
 
 const saveLocalStorage = (param) => {
   const armazena = recuperaLocalStorage() || [];
   const total = [...armazena, param];
   localStorage.setItem('cartItems', JSON.stringify(total));
+  sumTotal();
+};
+
+const sumTotal = () => {
+  const getTotal = document.querySelector('.total-price');
+  const array = recuperaLocalStorage() || [];
+  const arraySplit = array.map((param) => param.split('$').splice(1, 1));
+  const flat = arraySplit.flatMap((num) => num);
+  const resultado = flat.reduce((acc, curr) => +acc + +curr, 0);
+  getTotal.innerHTML = resultado;
+};
+
+const soma = () => {
+  const getLi = document.querySelectorAll('.cart__item');
+  console.log(getLi);
+};
+
+const cartItemClickListener = (event) => {
+  event.target.remove();
 };
 
 const recuperaItems = () => {
@@ -131,15 +155,6 @@ const myCart = async () => {
   });
 };
 
-const clearCarrinho = () => {
-  getOl.innerHTML = '';
-};
-
-const resetCarrinho = () => {
-  const clearBtn = document.querySelector('.empty-cart');
-  clearBtn.addEventListener('click', clearCarrinho);
-};
-
 const createLoading = () => {
   const div = document.createElement('div');
   div.className = 'loading';
@@ -160,4 +175,5 @@ window.onload = async () => {
   resetCarrinho();
   recuperaItems();
   removeLoading();
+  soma();
 };

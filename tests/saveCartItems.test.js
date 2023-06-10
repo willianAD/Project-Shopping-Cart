@@ -10,7 +10,7 @@ describe('3 - Teste a função saveCartItems', () => {
   });
   it('Teste se, saveCartItems com cartItem localStorage é chamado', () => {
     saveCartItems('cartItem');
-    expect(localStorage.setItem).toHaveBeenCalledWith({ 'cartItem': param });
+    expect(localStorage.setItem).toHaveBeenCalledWith({ 'cartItems': 'cartItem' });
   });
   // fail('Teste vazio');
 });
