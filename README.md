@@ -14,7 +14,9 @@ Foi desenvolvido um carrinho de compras utilizando DOM (HTML, CSS e JavaScript) 
 
 ## Como usar
 
-pode ser acessado atravez desse link [clique aqui](https://willianad.github.io/Project-Shopping-Cart/).
+Poderá ser acessado através desse link [clique aqui](https://willianad.github.io/Project-Shopping-Cart/).
+
+ou
 
 1. Clone este repositório:
 
