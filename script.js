@@ -95,14 +95,6 @@ const resetCarrinho = () => {
 const recuperaLocalStorage = () => {
   const armazena = localStorage.getItem('cartItems');
   return JSON.parse(armazena);
-
-};
-
-const saveLocalStorage = (param) => {
-  const armazena = recuperaLocalStorage() || [];
-  const total = [...armazena, param];
-  localStorage.setItem('cartItems', JSON.stringify(total));
-  sumTotal();
 };
 
 const sumTotal = () => {
@@ -112,6 +104,13 @@ const sumTotal = () => {
   const flat = arraySplit.flatMap((num) => num);
   const resultado = flat.reduce((acc, curr) => +acc + +curr, 0);
   getTotal.innerHTML = resultado;
+};
+
+const saveLocalStorage = (param) => {
+  const armazena = recuperaLocalStorage() || [];
+  const total = [...armazena, param];
+  localStorage.setItem('cartItems', JSON.stringify(total));
+  sumTotal();
 };
 
 const soma = () => {
